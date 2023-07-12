@@ -3,6 +3,7 @@
 - [Description](#description)
 - [Usage](#usage)
 - [Options](#options)
+- [TODO](#todo)
 
 ## Description
 It's a simple script to check if the environment variables are set and correspond to the expected values or types.
@@ -24,7 +25,11 @@ This will generate a `/env` folder containing a `schema.mjs` file and a `env.d.t
 
 Then, you can run the checker:
 ```bash
-npx env-var-check
+npx env-var-check check 
+```
+Or your schema is using Zod:
+```bash
+npx env-var-check check --zod
 ```
 
 You might want to add it to `package.json` and do something like this to check the environment variables before running the app:
@@ -41,3 +46,9 @@ You might want to add it to `package.json` and do something like this to check t
 
 ## Options
 - `--zod`: Initialize the schema with Zod objects instead of Vanilla JS Objects
+
+## TODO
+- [ ] Add tests
+- [ ] Add more options
+- [ ] Implement the `--schema` option to specify a custom schema file path
+- [ ] Add more examples
