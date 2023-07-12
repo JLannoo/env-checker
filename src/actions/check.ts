@@ -66,7 +66,6 @@ export default async function CheckAction(options: CheckOptions){
 	
 			if(!errorsServer.length && !errorsClient.length) printSuccess();
 		} catch(e: any) {
-			console.log(e);
 			console.log(chalk.red(`Zod is installed, but ${DEFAULT_SCHEMA_PATH} is not a valid ZodObject.`));
 			console.log(chalk.red("To use Zod, run `env-checker init --zod`."));
 		}
