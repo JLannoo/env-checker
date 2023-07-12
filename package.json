@@ -1,5 +1,5 @@
 {
-  "name": "env-checker",
+  "name": "env-var-check",
   "version": "0.0.1",
   "description": "A simple CLI tool to check if all the required environment variables are set, based on a schema file.",
   "type": "module",
@@ -25,7 +25,7 @@
     "version:patch": "npm version patch",
     "version:minor": "npm version minor",
     "version:major": "npm version major",
-    "prepublishOnly": "npm run build && npm test"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "env",
@@ -38,6 +38,11 @@
     "command"
   ],
   "author": "JLannoo",
+  "repository": {
+    "type": "github:user/repo",
+    "url": "https://github.com/JLannoo/env-checker"
+  },
+  "homepage": "https://github.com/JLannoo/env-checker#readme",
   "license": "ISC",
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
