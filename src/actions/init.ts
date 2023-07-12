@@ -19,21 +19,23 @@ export default async function initAction(options: InitOptions) {
 	fs.writeFileSync(DEFAULT_DECLARATION_PATH, options.zod ? tsZodNodeEnv() : tsNodeEnv());
 
 	// Ask to install zod
-	await inquirer.prompt([{
-		type: "confirm",
-		name: "zod",
-		message: "Do you want to install zod?",
-		default: true,
-	}]).then((answers) => {
-		if(answers.zod) {
-			console.log(chalk.cyanBright("Instaling zod..."));
-			const pacMan = getUserPackageManager();
-			
-			if(pacMan === "yarn") return runCommand("yarn add zod");
-			if(pacMan === "pnpm") return runCommand("pnpm add zod");
-			if(pacMan === "npm") return runCommand("npm i zod");
-		}
-	});
+	if(options.zod) {
+		await inquirer.prompt([{
+			type: "confirm",
+			name: "zod",
+			message: "Do you want to install zod?",
+			default: true,
+		}]).then((answers) => {
+			if(answers.zod) {
+				console.log(chalk.cyanBright("Instaling zod..."));
+				const pacMan = getUserPackageManager();
+				
+				if(pacMan === "yarn") return runCommand("yarn add zod");
+				if(pacMan === "pnpm") return runCommand("pnpm add zod");
+				if(pacMan === "npm") return runCommand("npm i zod");
+			}
+		});
+	}
 
 	console.log(chalk.greenBright("Done!", chalk.bold("env-checker"), "is ready to use! \n"));
 
@@ -42,12 +44,15 @@ export default async function initAction(options: InitOptions) {
 }
 
 function defaultSchema() {
-	return `export const ServerSchema = {
-    // NEW_VARIABLE: "",
+	return `// Allows [enums] and "string" types
+	
+export const ServerSchema = {
+	// NODE_ENV: ["development", "production", "test"],
+    // NEW_STRING: "string",
 };
 
 export const ClientSchema = {
-	// NEW_VARIABLE: "",
+	// NEW_VARIABLE: "string",
 };
 `;
 }
@@ -56,21 +61,18 @@ function defaultZodSchema(){
 	return `import * as z from "zod";
 
 export const ServerSchema = z.object({
-    NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
-    
+    // NODE_ENV: z.enum(["development", "production", "test"]),
     // NEW_VARIABLE: z.string(),
 });
-export type ServerEnv = z.infer<typeof ServerSchema>;
 
 export const ClientSchema = z.object({
     // NEW_VARIABLE: z.string(),
 });
-export type ClientEnv = z.infer<typeof ClientSchema>;
 `;
 }
 
 function tsNodeEnv() {
-	return `import { ServerSchema , ClientSchema } from "./schema.ts";
+	return `import { ServerSchema , ClientSchema } from "./schema.mjs";
 
 type Schema = typeof ServerSchema & typeof ClientSchema;
 
@@ -83,11 +85,13 @@ declare global {
 }
 
 function tsZodNodeEnv() {
-	return `import { ServerEnv , ClientEnv } from "./schema.ts";
+	return `import { ServerSchema , ClientSchema } from "./schema.mjs";
+
+type Schema = z.infer<typeof ServerSchema> & z.infer<typeof ClientSchema>;
 
 declare global {
 	declare namespace NodeJS {
-		export interface ProcessEnv extends ServerEnv, ClientEnv {}
+		export interface ProcessEnv extends Schema {}
 	}
 }
 `;
