@@ -38,25 +38,24 @@ export default async function CheckAction(options: CheckOptions){
 	// Check if .env file is valid
 	const env = process.env;
 
-	// Check if zod is installed
-	let hasZod = false;
-	try { 
-		// @ts-ignore
-		const ZodObject = (await import("zod")).ZodObject;
-		hasZod = true;
-	} catch(e: any) {
-		if(e.code === "MODULE_NOT_FOUND") {
-			console.log(chalk.red("Zod is not installed. Did you you mean to use Zod for schema validation?"));
-			console.log(chalk.red("To use Zod, run `env-checker init --zod` and when asked if you want to use Zod, answer yes."));
-			return;
-		}
-	}
-
 	const { ServerSchema, ClientSchema } = schema;
 
+	// Validate correct schema type
+	const schemasAreZod = schemaIsZodIsh(ServerSchema) && schemaIsZodIsh(ClientSchema);
+	if(schemasAreZod && !options.zod) {
+		console.log(chalk.red("It looks like your schema is a ZodObject, but you are not using Zod for validation."));
+		console.log(chalk.red("To use Zod, run `env-checker check --zod`."));
+		return;
+	}
+	if(!schemasAreZod && options.zod) {
+		console.log(chalk.red("It looks like your schema is not a ZodObject, but you are using Zod for validation."));
+		console.log(chalk.red("To use vanilla JS, run `env-checker check`."));
+		return;
+	}
+
 	// Validate schema
-	if(hasZod) {
-		console.log(chalk.yellow("Zod is installed, using Zod for schema validation."));
+	if(options.zod) {
+		console.log(chalk.yellow("Using Zod for schema validation."));
 		try {
 			const errorsServer = validateZodSchema(ServerSchema, env);
 			const errorsClient = validateZodSchema(ClientSchema, env);
@@ -66,12 +65,12 @@ export default async function CheckAction(options: CheckOptions){
 	
 			if(!errorsServer.length && !errorsClient.length) printSuccess();
 		} catch(e: any) {
-			console.log(chalk.red(`Zod is installed, but ${DEFAULT_SCHEMA_PATH} is not a valid ZodObject.`));
+			console.log(chalk.red(`Zod is not installed, or there was an error validating the schema.`));
 			console.log(chalk.red("To use Zod, run `env-checker init --zod`."));
 		}
 
 	} else {
-		console.log(chalk.yellow("Zod is not installed, using vanilla JS for schema validation."));
+		console.log(chalk.yellow("Using vanilla JS for schema validation."));
 		const errorsServer = validateVanillaSchema(ServerSchema, env);
 		const errorsClient = validateVanillaSchema(ClientSchema, env);
 
@@ -128,4 +127,9 @@ function printErrors(context: "client" | "server", errors: string[]) {
 
 function printSuccess() {
 	console.log(chalk.green("✅ Environment variables are valid! ✅"));
+}
+
+function schemaIsZodIsh(schema: any) {
+	const zodProps = ["safeParse", "parse", "_cached", "_def"];
+	return zodProps.every(prop => prop in schema);
 }
