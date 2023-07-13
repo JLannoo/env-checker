@@ -45,10 +45,16 @@ You might want to add it to `package.json` and do something like this to check t
 ```
 
 ## Options
+### `init`
 - `--zod`: Initialize the schema with Zod objects instead of Vanilla JS Objects
+
+### `check`
+- `--zod`: Use Zod to validate the environment variables
+- `--env`: Specify the path to the environment variables file (default: `.env`)
+- `--schema`: Specify the path to the schema file (default: `./env/schema.mjs`)
 
 ## TODO
 - [ ] Add tests
 - [ ] Add more options
-- [ ] Implement the `--schema` option to specify a custom schema file path
+- [x] Implement the `--schema` option to specify a custom schema file path
 - [ ] Add more examples

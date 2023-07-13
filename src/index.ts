@@ -25,11 +25,13 @@ program
 export type CheckOptions = {
     schema: string;
 	zod: boolean;
+	env: string;
 }
 program
 	.command("check")
 	.description("Check environment variables")
-	.option("--schema <path>", "Path to schema file (NOT IMPLEMENTED)", DEFAULT_PATHS.SCHEMA)
+	.option("--schema <path>", "Path to schema file", DEFAULT_PATHS.SCHEMA)
+	.option("--env <path>", "Path to .env file", DEFAULT_PATHS.ENV)
 	.option("--zod", "Use zod for validation")
 	.action((options: CheckOptions) => {
 		CheckAction(options);

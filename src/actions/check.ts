@@ -12,12 +12,6 @@ export default async function CheckAction(options: CheckOptions){
 	// Get path where command was run
 	const cwd = process.cwd();
 
-	// Check if /env/ folder exists
-	if(!fs.existsSync(path.join(cwd, "env"))) {
-		console.log(chalk.red("No env folder found!"));
-		return;
-	}
-
 	// Check if schema.ts exists
 	if(!fs.existsSync(path.join(cwd, options.schema))) {
 		console.log(chalk.red(`No ${options.schema} file found!`));
@@ -25,8 +19,8 @@ export default async function CheckAction(options: CheckOptions){
 	}
 
 	// Check if .env file exists
-	if(!fs.existsSync(path.join(cwd, ".env"))) {
-		console.log(chalk.red("No .env file found!"));
+	if(!fs.existsSync(path.join(cwd, options.env))) {
+		console.log(chalk.red(`No ${options.env} file found!`));
 		return;
 	}
 
