@@ -3,7 +3,7 @@ import { program } from "commander";
 import InitAction from "./actions/init.js";
 import CheckAction from "./actions/check.js";
 
-import { DEFAULT_SCHEMA_PATH } from "./consts.js";
+import { DEFAULT_PATHS } from "./consts.js";
 
 program
 	.version("0.0.1")
@@ -29,7 +29,7 @@ export type CheckOptions = {
 program
 	.command("check")
 	.description("Check environment variables")
-	.option("--schema <path>", "Path to schema file (NOT IMPLEMENTED)", DEFAULT_SCHEMA_PATH)
+	.option("--schema <path>", "Path to schema file (NOT IMPLEMENTED)", DEFAULT_PATHS.SCHEMA)
 	.option("--zod", "Use zod for validation")
 	.action((options: CheckOptions) => {
 		CheckAction(options);

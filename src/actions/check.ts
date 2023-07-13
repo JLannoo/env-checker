@@ -3,7 +3,6 @@ import chalk from "chalk";
 
 import fs from "node:fs";
 import path from "node:path";
-import { DEFAULT_SCHEMA_PATH } from "../consts.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -20,8 +19,8 @@ export default async function CheckAction(options: CheckOptions){
 	}
 
 	// Check if schema.ts exists
-	if(!fs.existsSync(path.join(cwd, DEFAULT_SCHEMA_PATH))) {
-		console.log(chalk.red(`No ${DEFAULT_SCHEMA_PATH} file found!`));
+	if(!fs.existsSync(path.join(cwd, options.schema))) {
+		console.log(chalk.red(`No ${options.schema} file found!`));
 		return;
 	}
 
@@ -32,7 +31,7 @@ export default async function CheckAction(options: CheckOptions){
 	}
 
 	// Check if schema.ts is valid
-	const schemaPath = "file://" + path.join(cwd, DEFAULT_SCHEMA_PATH);
+	const schemaPath = "file://" + path.join(cwd, options.schema);
 	const schema = await import(schemaPath);
 
 	// Check if .env file is valid

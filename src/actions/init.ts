@@ -3,7 +3,7 @@ import fs from "node:fs";
 
 import inquirer from "inquirer";
 
-import { DEFAULT_DECLARATION_PATH, DEFAULT_SCHEMA_PATH } from "../consts.js";
+import { DEFAULT_PATHS } from "../consts.js";
 import { InitOptions } from "../index.js";
 import runCommand from "../utils/runCommand.js";
 import { getUserPackageManager } from "../utils/getUserPackageManager.js";
@@ -13,10 +13,10 @@ export default async function initAction(options: InitOptions) {
 	if(!fs.existsSync("env")) fs.mkdirSync("env");
 
 	// Create schema.ts file in /env/
-	fs.writeFileSync(DEFAULT_SCHEMA_PATH, options.zod ? defaultZodSchema() : defaultSchema());
+	fs.writeFileSync(DEFAULT_PATHS.SCHEMA, options.zod ? defaultZodSchema() : defaultSchema());
 
 	// Create env.d.ts file in /env/
-	fs.writeFileSync(DEFAULT_DECLARATION_PATH, options.zod ? tsZodNodeEnv() : tsNodeEnv());
+	fs.writeFileSync(DEFAULT_PATHS.DECLARATION, options.zod ? tsZodNodeEnv() : tsNodeEnv());
 
 	// Ask to install zod
 	if(options.zod) {
@@ -39,7 +39,7 @@ export default async function initAction(options: InitOptions) {
 
 	console.log(chalk.greenBright("Done!", chalk.bold("env-checker"), "is ready to use! \n"));
 
-	console.log(chalk.blueBright("Setup the schema in", chalk.white(DEFAULT_SCHEMA_PATH)));
+	console.log(chalk.blueBright("Setup the schema in", chalk.white(DEFAULT_PATHS.SCHEMA)));
 	console.log(chalk.blueBright("Run", chalk.bold("`npx env-checker check`"), "to check your environment variables!"));
 }
 

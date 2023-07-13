@@ -1,2 +1,5 @@
-export const DEFAULT_SCHEMA_PATH = "env/schema.mjs";
-export const DEFAULT_DECLARATION_PATH = "env/env.d.ts";
+export const DEFAULT_PATHS = {
+    SCHEMA: "env/schema.mjs",
+    DECLARATION: "env/env.d.ts",
+    ENV: ".env"
+}
