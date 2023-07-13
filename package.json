@@ -4,7 +4,7 @@
   "description": "A simple CLI tool to check if all the required environment variables are set, based on a schema file.",
   "type": "module",
   "bin": {
-    "env-checker": "build/index.js"
+    "env-var-check": "build/index.js"
   },
   "files": [
     "/build"

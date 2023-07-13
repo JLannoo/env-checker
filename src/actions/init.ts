@@ -36,10 +36,10 @@ export default async function initAction(options: InitOptions) {
 		}
 	}
 
-	console.log(chalk.greenBright("Done!", chalk.bold("env-checker"), "is ready to use! \n"));
+	console.log(chalk.greenBright("Done!", chalk.bold("env-var-check"), "is ready to use! \n"));
 
 	console.log(chalk.blueBright("Setup the schema in", chalk.underline.white(`${DEFAULT_PATHS.FOLDER}/${DEFAULT_PATHS.SCHEMA}`)));
-	console.log(chalk.blueBright("Run", chalk.bold("`npx env-checker check`"), "to check your environment variables!"));
+	console.log(chalk.blueBright("Run", chalk.bold("npx env-var-check check" + (options.zod ? " --zod" : "")), "to check your environment variables!"));
 
 	// Exit process
 	process.exit(0);

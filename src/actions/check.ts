@@ -38,12 +38,12 @@ export default async function CheckAction(options: CheckOptions){
 	const schemasAreZod = schemaIsZodIsh(ServerSchema) && schemaIsZodIsh(ClientSchema);
 	if(schemasAreZod && !options.zod) {
 		console.log(chalk.red("It looks like your schema is a ZodObject, but you are not using Zod for validation."));
-		console.log(chalk.red("To use Zod, run `env-checker check --zod`."));
+		console.log(chalk.red("To use Zod, run `env-var-check check --zod`."));
 		process.exit(1);
 	}
 	if(!schemasAreZod && options.zod) {
 		console.log(chalk.red("It looks like your schema is not a ZodObject, but you are using Zod for validation."));
-		console.log(chalk.red("To use vanilla JS, run `env-checker check`."));
+		console.log(chalk.red("To use vanilla JS, run `env-var-check check`."));
 		process.exit(1);
 	}
 
@@ -65,7 +65,7 @@ export default async function CheckAction(options: CheckOptions){
 			process.exit(1);
 		} catch(e: any) {
 			console.log(chalk.red(`Zod is not installed, or there was an error validating the schema.`));
-			console.log(chalk.red("To use Zod, run `env-checker init --zod`."));
+			console.log(chalk.red("To use Zod, run `env-var-check init --zod`."));
 
 			process.exit(1);
 		}

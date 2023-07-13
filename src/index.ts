@@ -6,7 +6,7 @@ import CheckAction from "./actions/check.js";
 import { DEFAULT_PATHS } from "./consts.js";
 
 program
-	.version("0.0.7")
+	.version("0.0.8")
 	.description("A CLI for checking your environment variables");
 
 // Init command
@@ -16,7 +16,7 @@ export type InitOptions = {
 }
 program
 	.command("init")
-	.description("Initialize env-checker")
+	.description("Initialize env-var-check")
 	.option("--folder <path>", "Path to folder where schema and declaration will be created", DEFAULT_PATHS.FOLDER)
 	.option("--zod", "Use zod for validation")
 	.action((options: InitOptions) => {
