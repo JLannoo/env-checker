@@ -10,13 +10,16 @@ import { getUserPackageManager } from "../utils/getUserPackageManager.js";
 
 export default async function initAction(options: InitOptions) {
 	// Create /env/ folder in root
-	if(!fs.existsSync("env")) fs.mkdirSync("env");
+	const folderPath = options.folder ? options.folder : DEFAULT_PATHS.FOLDER;
+	if(!fs.existsSync(folderPath)) fs.mkdirSync(folderPath);
 
 	// Create schema.ts file in /env/
-	fs.writeFileSync(DEFAULT_PATHS.SCHEMA, options.zod ? defaultZodSchema() : defaultSchema());
+	const schemaPath = `${folderPath}/${DEFAULT_PATHS.SCHEMA}`
+	fs.writeFileSync(schemaPath, options.zod ? defaultZodSchema() : defaultSchema());
 
 	// Create env.d.ts file in /env/
-	fs.writeFileSync(DEFAULT_PATHS.DECLARATION, options.zod ? tsZodNodeEnv() : tsNodeEnv());
+	const declarationPath = `${folderPath}/${DEFAULT_PATHS.DECLARATION}`;
+	fs.writeFileSync(declarationPath, options.zod ? tsZodNodeEnv() : tsNodeEnv());
 
 	// Ask to install zod
 	if(options.zod) {

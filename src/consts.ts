@@ -1,5 +1,6 @@
 export const DEFAULT_PATHS = {
-    SCHEMA: "env/schema.mjs",
-    DECLARATION: "env/env.d.ts",
+    FOLDER: "env",
+    SCHEMA: "schema.mjs",
+    DECLARATION: "env.d.ts",
     ENV: ".env"
 }

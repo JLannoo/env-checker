@@ -11,11 +11,13 @@ program
 
 // Init command
 export type InitOptions = {
+	folder: string;
     zod: boolean;
 }
 program
 	.command("init")
 	.description("Initialize env-checker")
+	.option("--folder <path>", "Path to folder where schema and declaration will be created", DEFAULT_PATHS.FOLDER)
 	.option("--zod", "Use zod for validation")
 	.action((options: InitOptions) => {
 		InitAction(options);
@@ -30,8 +32,8 @@ export type CheckOptions = {
 program
 	.command("check")
 	.description("Check environment variables")
-	.option("--schema <path>", "Path to schema file", DEFAULT_PATHS.SCHEMA)
-	.option("--env <path>", "Path to .env file", DEFAULT_PATHS.ENV)
+	.option("--schema <path>", "Path to schema file", `${DEFAULT_PATHS.FOLDER}/${DEFAULT_PATHS.SCHEMA}`)
+	.option("--env <path>", "Path to .env file", `${DEFAULT_PATHS.ENV}`)
 	.option("--zod", "Use zod for validation")
 	.action((options: CheckOptions) => {
 		CheckAction(options);
