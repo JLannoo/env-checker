@@ -16,13 +16,13 @@ export default async function CheckAction(options: CheckOptions){
 	// Check if schema.ts exists
 	if(!fs.existsSync(path.join(cwd, options.schema))) {
 		console.log(chalk.red(`No ${options.schema} file found!`));
-		return;
+		process.exit(1);
 	}
 
 	// Check if .env file exists
 	if(!fs.existsSync(path.join(cwd, options.env))) {
 		console.log(chalk.red(`No ${options.env} file found!`));
-		return;
+		process.exit(1);
 	}
 
 	// Check if schema.ts is valid
@@ -39,12 +39,12 @@ export default async function CheckAction(options: CheckOptions){
 	if(schemasAreZod && !options.zod) {
 		console.log(chalk.red("It looks like your schema is a ZodObject, but you are not using Zod for validation."));
 		console.log(chalk.red("To use Zod, run `env-checker check --zod`."));
-		return;
+		process.exit(1);
 	}
 	if(!schemasAreZod && options.zod) {
 		console.log(chalk.red("It looks like your schema is not a ZodObject, but you are using Zod for validation."));
 		console.log(chalk.red("To use vanilla JS, run `env-checker check`."));
-		return;
+		process.exit(1);
 	}
 
 	// Validate schema
@@ -57,10 +57,17 @@ export default async function CheckAction(options: CheckOptions){
 			if(errorsServer.length) printErrors("server", errorsServer);
 			if(errorsClient.length) printErrors("client", errorsClient);
 	
-			if(!errorsServer.length && !errorsClient.length) printSuccess();
+			if(!errorsServer.length && !errorsClient.length) {
+				printSuccess();
+				process.exit(0);
+			}
+
+			process.exit(1);
 		} catch(e: any) {
 			console.log(chalk.red(`Zod is not installed, or there was an error validating the schema.`));
 			console.log(chalk.red("To use Zod, run `env-checker init --zod`."));
+
+			process.exit(1);
 		}
 
 	} else {
@@ -71,7 +78,12 @@ export default async function CheckAction(options: CheckOptions){
 		if(errorsServer.length) printErrors("server", errorsServer);
 		if(errorsClient.length) printErrors("client", errorsClient);
 
-		if(!errorsServer.length && !errorsClient.length) printSuccess();
+		if(!errorsServer.length && !errorsClient.length) {
+			printSuccess();
+			process.exit(0);
+		}
+
+		process.exit(1);
 	}
 }
 

@@ -6,7 +6,7 @@ import CheckAction from "./actions/check.js";
 import { DEFAULT_PATHS } from "./consts.js";
 
 program
-	.version("0.0.6")
+	.version("0.0.7")
 	.description("A CLI for checking your environment variables");
 
 // Init command

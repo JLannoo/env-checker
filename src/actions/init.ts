@@ -28,9 +28,9 @@ export default async function initAction(options: InitOptions) {
 			console.log(chalk.cyanBright("Instaling zod..."));
 			const pacMan = getUserPackageManager();
 
-			if(pacMan === "yarn") return runCommand("yarn add zod");
-			if(pacMan === "pnpm") return runCommand("pnpm add zod");
-			if(pacMan === "npm") return runCommand("npm i zod");
+			if(pacMan === "yarn") runCommand("yarn add zod");
+			if(pacMan === "pnpm") runCommand("pnpm add zod");
+			if(pacMan === "npm") runCommand("npm i zod");
 		} else {
 			console.log(chalk.yellowBright("Skipping zod installation..."));
 		}
@@ -38,8 +38,11 @@ export default async function initAction(options: InitOptions) {
 
 	console.log(chalk.greenBright("Done!", chalk.bold("env-checker"), "is ready to use! \n"));
 
-	console.log(chalk.blueBright("Setup the schema in", chalk.white(DEFAULT_PATHS.SCHEMA)));
+	console.log(chalk.blueBright("Setup the schema in", chalk.underline.white(`${DEFAULT_PATHS.FOLDER}/${DEFAULT_PATHS.SCHEMA}`)));
 	console.log(chalk.blueBright("Run", chalk.bold("`npx env-checker check`"), "to check your environment variables!"));
+
+	// Exit process
+	process.exit(0);
 }
 
 function defaultSchema() {

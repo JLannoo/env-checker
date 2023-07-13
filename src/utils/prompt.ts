@@ -10,11 +10,9 @@ export default function question(question: string): Promise<boolean> {
     const questionString = `${question} (y/n): `;
     return new Promise((resolve) => {
         rl.question(chalk.bold.cyanBright(questionString), (answer) => {
-            if(answer.toLowerCase() === "y" || answer === "") {
-                resolve(true);
-            } else {
-                resolve(false);
-            }
+            rl.close();
+            
+            resolve(answer.toLowerCase() === "y" || answer === "")
         });
     });
 }
