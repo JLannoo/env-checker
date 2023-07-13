@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "node  --loader ts-node/esm --experimental-specifier-resolution=node src/index.ts",
-    "build": "tsup src/index.ts --dts --format cjs,esm --clean --minify --out-dir build",
+    "build": "tsup src/index.ts --format esm --clean --minify --out-dir build",
     "test": "vitest --coverage",
     "test:coverage": "npx serve coverage",
     "version:patch": "npm version patch",
