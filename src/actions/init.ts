@@ -1,12 +1,12 @@
 import chalk from "chalk";
 import fs from "node:fs";
-
-import inquirer from "inquirer";
+import readline from "readline";
 
 import { DEFAULT_PATHS } from "../consts.js";
 import { InitOptions } from "../index.js";
 import runCommand from "../utils/runCommand.js";
 import { getUserPackageManager } from "../utils/getUserPackageManager.js";
+import question from "../utils/prompt.js";
 
 export default async function initAction(options: InitOptions) {
 	// Create /env/ folder in root
@@ -22,22 +22,24 @@ export default async function initAction(options: InitOptions) {
 	fs.writeFileSync(declarationPath, options.zod ? tsZodNodeEnv() : tsNodeEnv());
 
 	// Ask to install zod
+	
+	const rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout,
+	});
+
 	if(options.zod) {
-		await inquirer.prompt([{
-			type: "confirm",
-			name: "zod",
-			message: "Do you want to install zod?",
-			default: true,
-		}]).then((answers) => {
-			if(answers.zod) {
-				console.log(chalk.cyanBright("Instaling zod..."));
-				const pacMan = getUserPackageManager();
-				
-				if(pacMan === "yarn") return runCommand("yarn add zod");
-				if(pacMan === "pnpm") return runCommand("pnpm add zod");
-				if(pacMan === "npm") return runCommand("npm i zod");
-			}
-		});
+		const answer = await question("Do you want to install Zod?");
+		if(answer) {
+			console.log(chalk.cyanBright("Instaling zod..."));
+			const pacMan = getUserPackageManager();
+
+			if(pacMan === "yarn") return runCommand("yarn add zod");
+			if(pacMan === "pnpm") return runCommand("pnpm add zod");
+			if(pacMan === "npm") return runCommand("npm i zod");
+		} else {
+			console.log(chalk.yellowBright("Skipping zod installation..."));
+		}
 	}
 
 	console.log(chalk.greenBright("Done!", chalk.bold("env-checker"), "is ready to use! \n"));

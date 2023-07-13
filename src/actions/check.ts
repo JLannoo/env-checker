@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import dotenv from "dotenv";
+import { schemaIsZodIsh } from "../utils/schemaUtils.js";
 dotenv.config();
 
 type ParsedSchemaType = Record<string, string|number|Array<unknown>>;
@@ -120,9 +121,4 @@ function printErrors(context: "client" | "server", errors: string[]) {
 
 function printSuccess() {
 	console.log(chalk.green("✅ Environment variables are valid! ✅"));
-}
-
-function schemaIsZodIsh(schema: any) {
-	const zodProps = ["safeParse", "parse", "_cached", "_def"];
-	return zodProps.every(prop => prop in schema);
 }
