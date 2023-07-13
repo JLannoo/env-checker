@@ -22,12 +22,6 @@ export default async function initAction(options: InitOptions) {
 	fs.writeFileSync(declarationPath, options.zod ? tsZodNodeEnv() : tsNodeEnv());
 
 	// Ask to install zod
-	
-	const rl = readline.createInterface({
-		input: process.stdin,
-		output: process.stdout,
-	});
-
 	if(options.zod) {
 		const answer = await question("Do you want to install Zod?");
 		if(answer) {

@@ -9,14 +9,6 @@
   "files": [
     "/build"
   ],
-  "exports": {
-    ".": {
-      "import": "./build/index.js",
-      "require": "./build/index.cjs",
-      "default": "./build/index.js",
-      "types": "./build/index.d.ts"
-    }
-  },
   "scripts": {
     "start": "node  --loader ts-node/esm --experimental-specifier-resolution=node src/index.ts",
     "build": "tsup src/index.ts --format esm --clean --minify --out-dir build",
